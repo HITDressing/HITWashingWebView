@@ -13,6 +13,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            moduleName "serial_port"
+            abiFilters "armeabi-v7a", "arm64-v8a"
+            ldLibs "log"
+        }
     }
     buildTypes {
         release {
