@@ -6,9 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.webkit.JavascriptInterface
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -39,7 +37,13 @@ class MainActivity : AppCompatActivity() {
             settings.javaScriptEnabled = true
             scrollBarStyle = WebView.SCROLLBARS_OUTSIDE_OVERLAY
             settings.javaScriptCanOpenWindowsAutomatically = true
-            webViewClient = WebViewClient()
+            webChromeClient = WebChromeClient()
+            webViewClient = object : WebViewClient(){
+                override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest): Boolean {
+                    loadUrl(request.url.toString())
+                    return true
+                }
+            }
             addJavascriptInterface(WebAppInterface(context), "Android")
             loadUrl("http://115.159.59.238/")
         }
@@ -85,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                             .setMacAddress(macAddress)
                             .build()
                     //打开端口
-                    DeviceConnFactoryManager.getDeviceConnFactoryManagers()[0].openPort()
+                    DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].openPort()
                 }
                 else -> {
                 }

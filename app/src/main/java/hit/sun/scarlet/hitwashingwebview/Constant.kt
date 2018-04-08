@@ -18,13 +18,18 @@ object Constant {
         esc.addText("博鑫顺清洁服务\n")
         esc.addPrintAndLineFeed()
 
+        val sArray = title.split("&&")
+
+        val nameArray = sArray[1].split("&")
+        val describeArray = sArray[2].split("&")
+
         /* 打印文字 */
         // 取消倍高倍宽
         esc.addSelectPrintModes(EscCommand.FONT.FONTA, EscCommand.ENABLE.OFF, EscCommand.ENABLE.OFF, EscCommand.ENABLE.OFF, EscCommand.ENABLE.OFF)
         // 设置打印左对齐
         esc.addSelectJustification(EscCommand.JUSTIFICATION.LEFT)
         // 打印文字
-        esc.addText(title)
+        esc.addText(sArray[0])
         // 打印文字
         esc.addPrintAndLineFeed()
         for (i in 0..31) esc.addText("-")
@@ -32,27 +37,22 @@ object Constant {
 
         esc.addText("物品名称")
         esc.addSetHorAndVerMotionUnits(7.toByte(), 0.toByte())
-        esc.addSetAbsolutePrintPosition(6.toShort())
-        esc.addText("数量")
-        esc.addSetAbsolutePrintPosition(10.toShort())
-        esc.addText("价格")
+        esc.addSetAbsolutePrintPosition(5.toShort())
+        esc.addText("数量与单价")
         esc.addPrintAndLineFeed()
 
-        for (i in 0..2) {
-            esc.addText("ABB")
+        nameArray.forEachIndexed { i, c ->
+            esc.addText(c)
             esc.addSetHorAndVerMotionUnits(7.toByte(), 0.toByte())
-            esc.addSetAbsolutePrintPosition(6.toShort())
-            esc.addText("100")
-            esc.addSetAbsolutePrintPosition(10.toShort())
-            esc.addText("65.65")
+            esc.addSetAbsolutePrintPosition(5.toShort())
+            esc.addText(describeArray[i])
             esc.addPrintAndLineFeed()
         }
 
-        esc.addPrintAndLineFeed()
         for (i in 0..31) esc.addText("-")
         esc.addPrintAndLineFeed()
 
-        esc.addText("合计：\n")
+        esc.addText("合  计：${sArray[3]}元\n")
 
         // 设置打印左对齐
         esc.addSelectJustification(EscCommand.JUSTIFICATION.CENTER)
